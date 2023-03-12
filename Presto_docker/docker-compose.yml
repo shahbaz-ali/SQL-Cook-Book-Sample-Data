@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+
+  coordinator:
+    image: ahanaio/prestodb-sandbox
+    ports:
+      - "8080:8080"
+    container_name: "coordinator"
+    volumes:
+      - ./config_coordinator/config.properties:/opt/presto-server/etc/config.properties
+      - ./config_coordinator/mysql.properties:/opt/presto-server/etc/catalog/mysql.properties
+  worker:
+    image: ahanaio/prestodb-sandbox
+    container_name: "work0"
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./config_worker/work0/config.properties:/opt/presto-server/etc/config.properties
+      - ./config_worker/work0/mysql.properties:/opt/presto-server/etc/catalog/mysql.properties
+    depends_on:
+      - coordinator
+  
+  workerone:
+    image: ahanaio/prestodb-sandbox
+    container_name: "work1"
+    ports:
+      - "8091:8091"
+    volumes:
+      - ./config_worker/work1/config.properties:/opt/presto-server/etc/config.properties
+      - ./config_worker/work1/mysql.properties:/opt/presto-server/etc/catalog/mysql.properties
+    depends_on:
+      - coordinator
+
+  # workertwo:
+  #   image: ahanaio/prestodb-sandbox
+  #   container_name: "work2"
+  #   ports:
+  #     - "8082:8082"
+  #   volumes:
+  #     - ./config_worker/work2/config.properties:/opt/presto-server/etc/config.properties
+  #   depends_on:
+  #     - coordinator
+
+  # workerthree:
+  #   image: ahanaio/prestodb-sandbox
+  #   container_name: "work3"
+  #   ports:
+  #     - "8083:8083"
+  #   volumes:
+  #     - ./config_worker/work3/config.properties:/opt/presto-server/etc/config.properties
+  #   depends_on:
+  #     - coordinator
+
+  # workerfour:
+  #   image: ahanaio/prestodb-sandbox
+  #   container_name: "work4"
+  #   ports:
+  #     - "8084:8084"
+  #   volumes:
+  #     - ./config_worker/work3/config.properties:/opt/presto-server/etc/config.properties
+  #   depends_on:
+  #     - coordinator
